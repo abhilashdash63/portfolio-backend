@@ -50,3 +50,23 @@ def read_experience(db: Session = Depends(get_db)):
 @app.get("/skills/", response_model=list[schemas.Skill])
 def read_skills(db: Session = Depends(get_db)):
     return crud.get_skills(db)
+
+
+@app.post("/create-profile/")
+def create_profile():
+    from database import SessionLocal
+    from models import Profile
+
+    db = SessionLocal()
+
+    profile = Profile(
+        name="Abhilash Dash",
+        title="Python Backend Developer",
+        about="Full stack developer..."
+    )
+
+    db.add(profile)
+    db.commit()
+    db.refresh(profile)
+
+    return profile
